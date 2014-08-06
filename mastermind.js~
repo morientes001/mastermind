@@ -1,0 +1,81 @@
+
+var nb_cases = 4; //nombre de cases pour les pions du mastermind
+var possibilities = ['b', 'r', 'v', 'j', 'o', 'n'], //choix posssibles
+	nb_possibilities = possibilities.length; //nombre de choix
+
+	/********************
+	tirage au sort d'une combinaisons de pions par l'ordinateur
+	********************/
+	function choixOrdi(possibilities){
+		var solution = [];
+		var nb_possibilities = possibilities.length;
+		//alert("possibilities.length="+possibilities.length);
+		for(var i=0; i<nb_cases; i++){
+			solution.push(Math.floor(Math.random()*nb_possibilities));
+		}
+		return solution;
+	}
+
+	/*********************
+	verif si nombre compris entre 
+	*********************/
+
+
+
+/**************************
+Jouer au mastermind
+**************************/
+function play(){
+	//définition de nb_attemps_max à l'aide d'un 'do{ instr } while(condit);' (equivalent du while mais qui execute au moins une fois la boucle)
+	var nb_attemps_max;
+	do {
+		nb_attemps_max = parseInt(prompt("Veuillez entrer un nombre de tentatives maximales (entre 1 et 10)."));//parseInt permet la conversion d'un string en int
+	} while(isNaN(nb_attemps_max) || nb_attemps_max<1 || nb_attemps_max>10); //on boucle tant que l'utilisateur n'a pas saisi un nombre entre 1 et 10
+
+	//texte affichant les différentes possibilités de choix
+	var possibilities_text = "";
+	for(var i=0; i<nb_possibilities; i++){
+		possibilities_text+= i + "= " + possibilities[i] + (i==(nb_possibilities-1) ? "":", "); //la condition i==nb_possibilities-1 (= dernière itération) permet d'éviter l'ajout d'une virgule supplémentaire dans possibilities_text
+	}
+	//
+
+	var solution = choixOrdi(possibilities);
+	var cheat = "choix du pc : " + solution.join(", ");
+	/*for(var i=0; i<nb_cases; i++){
+		cheat+= solution[i] + (i==(nb_cases-1) ? "":", "); //la condition i==nb_cases-1 (= dernière itération) permet d'éviter l'ajout d'une virgule supplémentaire dans cheat
+
+	}*/
+
+	var attempts = 1, found = false;
+	while(!found && attempts<=nb_attemps_max){ //on boucle tant que l'utilisateur n'a pas trouvé la solution ou qu'il n'a pas atteint le nombre de tentatives max
+		var user_choices = []; //on initialise les choix de l'utilisateur
+		alert("trouvé : "+ (found?"oui":"non")+" , tentatives restantes? : " + ((attempts<=nb_attemps_max)?"oui":"non")); //msg de verif
+
+		for(var i=0; i<nb_cases; i++){
+			var choice = -1; //choix en cours, initialisation à -1 pour qu'il soit pas correct de suite.
+			while(isNaN(choice) || choice<0 || choice>=nb_possibilities){ //on boucle tant que l'utilisateur n'a pas choisit un nombre entre 0 et nb_possibilities-1 (s'il a appuyé sur la touche echap ou entré une chaine vide aussi)
+				choice = prompt(  "Tentative n° " + attempts + " sur " + nb_attemps_max + ", case n° " + (user_choices.length+1) + ": entrez un nombre compris entre 0 et " + nb_possibilities + " (" + possibilities_text + "; " + cheat + ")"  );
+			}
+			user_choices.push(choice); //on ajoute le choix fait par l'utilisateur à la liste de ses choix en cours
+		}
+
+		//Script de vérif d'égalité des tableaux du choix de l'utilisateur et de la solution :
+		var equal = true;
+		for(var i=0; i<nb_cases; i++){
+			equal = equal && (user_choices[i]==solution[i]);
+		}
+		//
+		if(equal){ //si l'utilisateur a trouvé la solution après avoir fait ses choix
+			found = true; //permet d'arrêter la boucle
+		} else { //sinon cela fait une tentative de plus échouée
+			alert("Vous avez fait " + attempts + " tentatives, il vous en reste " + (nb_attemps_max-attempts) + ". Attention, on approche de l'échec !!");
+			attempts++;
+		}
+	}
+
+	if(found){
+		alert("Bien joué, vous êtes un vrai dieu (il ne vous a fallu que " + attempts +" tentative(s) pour trouver la solution, quel talent) !");
+	} else {
+		alert("Comme c'est dommage, vous avez perdu !");
+	}
+}

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Mastermind</title>
+	<meta charset="utf-8">
+	<link href="reset.css" type="text/css" rel="stylesheet">
+	<link href="style.css" type="text/css" rel="stylesheet">
+	<script type="text/javascript" src="mastermind.js"></script>
+</head>
+<body>
+	<header>
+
+	</header>
+
+	<main>
+		<figure class="choix">
+			<figcaption>Choisissez une couleur</figcaption>
+			<ul class="couleurs_possibles">
+				<li class="coul0"></li>
+				<li class="coul1"></li>
+				<li class="coul2"></li>
+				<li class="coul3"></li>
+				<li class="coul4"></li>
+				<li class="coul5"></li>
+				<li class="coul6"></li>
+				<li class="coul7"></li>
+			</ul>
+		</figure>
+
+		<figure class="notifications">
+			<figcaption>Notification : </figcaption>
+			<p id="txt_notif"></p>
+		</figure>
+		<button id="validate">Valider la combinaison</button>
+		<button id="delete">Effacer la combinaison</button>
+		<button id="restart">Nouvelle partie</button>
+
+		<figure class="jeu">
+			<figcaption>Plateau de jeu</figcaption>
+			<ul class="solution">
+				<!-- pions de l'ordi -->
+			</ul>
+			<ul class="plateau">
+				<!-- plateau créé automatiquement en fonction des
+					paramètres (nb pions et tentatives max) dans mastermind.js (fonct° initialiserJeu())-->
+			</ul>
+		</figure>
+		
+	</main>
+</body>
+</html>

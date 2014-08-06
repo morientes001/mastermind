@@ -1,0 +1,116 @@
+html{
+	font-size: 62.5%; /*10px*/
+	min-width: 600px;
+}
+
+button#validate{
+	position: fixed;
+	top: 20rem;
+	left: 4rem;
+}
+button#delete{
+	position: fixed;
+	top: 22.5rem;
+	left: 4rem;
+}
+button#restart{
+	margin: 1em 5em;
+	position: fixed;
+}
+button#display{
+	position: relative;
+	top: -1rem;
+}
+
+figure.choix{
+	position: fixed;
+	top: 5rem;
+	left: 5rem;
+}
+figure.notifications{
+	font-size: 1.2rem;
+	position: fixed;
+	top: 26rem;
+	left: 3rem;
+	max-width: 25rem;
+	padding: 1rem;
+	border: 1px solid grey;
+	background-color: lightblue;
+	word-wrap: break-word;
+}
+figure.jeu{
+	position: absolute;
+	top: 8rem;
+	left: 40rem;
+}
+
+figcaption{
+	font-size: 1.6rem;
+	font-weight: bold;
+	padding: 0.5rem;
+}
+
+
+ul.couleurs_possibles{
+	border: 1px solid grey;
+	background: lightblue;
+	width: 10.2rem;
+	height: 10rem;
+	margin: 1rem 2.5rem;
+}
+ul.pions{
+	border: 1px solid grey;
+	background: lightblue;
+	width: 14rem;
+	height: 3rem;
+	margin: 0.3rem 3rem;
+	display: inline-block;
+}
+ul.solution{
+	position: fixed;
+	top: 1rem;
+	z-index: 100;
+	margin: 1rem;
+}
+
+/* cases de jeu */
+ul.couleurs_possibles li{
+	cursor: pointer;
+}
+ul.couleurs_possibles li, ul.pions li, ul.solution ul li{
+	border: 1px solid black;
+	padding:1rem;
+	margin:0.5rem;
+	display: inline-block;
+}
+
+figure.jeu>ul>li{/* on place un repère relatif pour chaque série de cases du plateau de jeu avec > (sélecteur enfant direct)*/
+	position: relative;
+}
+figure.jeu p, figure.jeu span{
+	position: absolute;
+	display: inline;
+	font-size: 1.4rem;
+}
+figure.jeu p{
+	top: 1rem;
+}
+
+/* elements affichage résultat de la manche */
+ul.plateau span{
+	background-color: beige;
+	border: 1px solid black;
+	margin : 0.9rem;
+	padding: 0.3rem;
+	display: none; /*affichés au fur et a mesure du jeu*/
+}
+.pion_bon{
+	color: green;
+	position: absolute;
+	left: 17rem;
+}
+.pion_mal{
+	color: red;
+	position: absolute;
+	left: 19rem;
+}

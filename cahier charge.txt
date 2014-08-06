@@ -1,0 +1,8 @@
+- choix couleur de l'ordi (rouge, jaune; vert, bleu, orange, blanc, violet, fushia)
+- affichage cases tableau (avec solution)
+- choix utilisateur (boucle se repetant tant que pas ok ou nb tentatives < 20):
+	- tableau de couleurs => choix possibilité avec prompt (4x) (stockage choix dans tab)
+	- verification positions : les bonnes d'abord (avec un for : si choix user[i] == solution[i] => resCases[i] = true) et les mal placées ensuite (parcours à l'aide de 2 for imbriqués : si la case i n'est pas bien placée, parcours du tab en vérifiant si choix_user[i] est placé ailleurs dans solution[]).
+	- affichage des résultats et vérif si nb_cases_ok == 4
+
+parcours cases mal placées : 
