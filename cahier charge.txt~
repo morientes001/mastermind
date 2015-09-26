@@ -1,5 +1,0 @@
-- choix couleur de l'ordi (rouge, jaune; vert, bleu, orange, blanc, violet, fushia)
-- affichage tableau
-- choix utilisateur :
-	- tableau de couleurs => choix possibilité avec prompt (4x) (stockage choix dans tab)
-	- verification positions : les bonnes d'abord et les mal placées ensuite.
