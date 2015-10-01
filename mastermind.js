@@ -13,35 +13,35 @@ var	choix_utilisateur = [], //combinaison en cours du joueur
 var display_solution = false;
 var txt_notif;
 
-window.onload = initialiserJeu;
-
+$(function(){
 	/********************
 	initialisation du plateau de jeu
 	********************/
-	function initialiserJeu(){
-		txt_notif = document.getElementById("txt_notif");
+	txt_notif = $("#txt_notif");
 
 		//initialisation interface des choix possibles
-		var	nb_possibilities = possibilities.length,
-			li_pions;
+		var	li_pions;
 		for(var i=0; i<nb_possibilities; i++){
-			li_pions = document.getElementsByClassName("coul"+i)[0];
+
+			$("ul#poss").append("<li class=coul"+i+">");
+			$("li.coul"+i).css("background-color", possibilities[i]).on("click", clic_ajout_couleur);
+			/*li_pions = $(".coul"+i);
 			li_pions.style.background = possibilities[i];
-			li_pions.onclick = clic_ajout_couleur;
+			li_pions.onclick = clic_ajout_couleur;*/
 		}
 
 		//init comportement boutons
-		document.getElementById("validate").onclick = validerCombi;
-		document.getElementById("delete").onclick = supprCombi;
-		document.getElementById("restart").onclick = function(){
+		$("#validate").on("click", validerCombi);
+		$("#delete").on("click", supprCombi);
+		$("#restart").on("click", function(){
 			if(confirm("Voulez-vous vraiment recommencer la partie ?")){//fenetre de demande de réinitialisation du jeu
-				window.location.reload();
+				location.reload(true);
 			}
-		}
+		});
 		////////////////////////
 		//init plateau de jeu///
 		////////////////////////
-			var solution = document.getElementsByClassName("solution")[0];
+			var solution = $(".solution");
 		
 			//init affichage cases pions ordi
 			var li_pions = document.createElement("li"); //li_pions = série de cases d'1 manche
@@ -103,7 +103,7 @@ window.onload = initialiserJeu;
 		choixOrdi();
 		affichagePionsOrdi(); //c'est pas drole sinon :D
 
-	}
+	});
 	
 	/********************
 	tirage au sort d'une combinaisons de pions par l'ordinateur

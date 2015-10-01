@@ -51,7 +51,7 @@ figcaption{
 }
 
 
-ul.couleurs_possibles{
+ul.poss{
 	border: 1px solid grey;
 	background: lightblue;
 	width: 10.2rem;
@@ -74,10 +74,10 @@ ul.solution{
 }
 
 /* cases de jeu */
-ul.couleurs_possibles li{
+ul.poss li{
 	cursor: pointer;
 }
-ul.couleurs_possibles li, ul.pions li, ul.solution ul li{
+ul.poss li, ul.pions li, ul.solution ul li{
 	border: 1px solid black;
 	padding:1rem;
 	margin:0.5rem;
