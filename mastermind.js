@@ -23,8 +23,10 @@ $(function(){
 		var	li_pions;
 		for(var i=0; i<nb_possibilities; i++){
 
-			$("ul#poss").append("<li class=coul"+i+">");
-			$("li.coul"+i).css("background-color", possibilities[i]).on("click", clic_ajout_couleur);
+			$("ul.poss").append("<li class=coul"+i+">");
+			$("li.coul"+i).css("background-color", possibilities[i])
+				.data("coul", possibilities[i]).data("num_couleur", i)
+				.on("click", clic_ajout_couleur);
 			/*li_pions = $(".coul"+i);
 			li_pions.style.background = possibilities[i];
 			li_pions.onclick = clic_ajout_couleur;*/
@@ -41,22 +43,29 @@ $(function(){
 		////////////////////////
 		//init plateau de jeu///
 		////////////////////////
-			var solution = $(".solution");
-		
+			$("div.solution").append("<ul class='pions'>")
+				.append("<button id='display'>Afficher / masquer la solution</button>");
+			
+			var pions_solution = $(".solution > ul");
+			$("#display").on("click", function(){
+				display_solution = !display_solution; //on inverse la var permettant l'affichage ou non de la solution
+				pions_solution.css("display", display_solution ? "inline-block":"none");
+				/*var pions_solution = document.getElementsByClassName("solution")[0].getElementsByTagName("ul")[0];
+				pions_solution.style.display = display_solution ? "inline-block":"none"; //on affiche les pions de la soluce ou non*/
+			});
 			//init affichage cases pions ordi
-			var li_pions = document.createElement("li"); //li_pions = série de cases d'1 manche
-			li_pions.className = "computer_choice";
 
+			/*
 			var ul = document.createElement("ul");
 			ul.className = "pions";
 			li_pions.appendChild(ul);
+			*/
 			for(var j=0; j<nb_cases; j++){//creation des 4 cases pour la tentative en cours
-				var li = document.createElement("li");
-				ul.appendChild(li);
+				pions_solution.append("<li>");
 			}
-			ul.style.display = display_solution ? "inline-block":"none";
+			pions_solution.css("display", display_solution ? "inline-block":"none");
 
-			var button_display = document.createElement("button");
+			/*var button_display = document.createElement("button");
 			button_display.textContent = "Afficher / masquer la solution";
 			button_display.id = "display";
 			button_display.onclick = function(){
@@ -64,41 +73,47 @@ $(function(){
 				display_solution = !display_solution; //on inverse la var permettant l'affichage ou non de la solution
 				pions_solution.style.display = display_solution ? "inline-block":"none"; //on affiche les pions de la soluce ou non
 			}
-			li_pions.appendChild(button_display);
+			li_pions.appendChild(button_display);*/
 
-
-			solution.appendChild(li_pions);
-
+			//$("div.solution").append(li_pions);
+//alert("0");
 			//init affichage cases normales
-			var plateau = document.getElementsByClassName("plateau")[0];
+			
+			//var plateau = document.getElementsByClassName("plateau")[0];
 			for(var i=0; i<nb_attemps_max; i++){
-				var li_pions = document.createElement("li"); //li_pions = série de cases d'1 manche
-				li_pions.className = "attempt"+i;
-
-				var txt = document.createElement("p");
+				/*var li_pions = document.createElement("li"); //li_pions = série de cases d'1 manche
+				li_pions.className = "attempt"+i;*/
+				$(".plateau").append("<li class='attempt"+i+"'>");
+				var li_pions = $(".attempt"+i);
+				/*var txt = document.createElement("p");
 				txt.textContent = (i+1)+" : ";
-				li_pions.appendChild(txt);
+				li_pions.appendChild(txt);*/
+				li_pions.append("<p>"+(i+1)+"</p>");
 
-				var ul = document.createElement("ul");
+				/*var ul = document.createElement("ul");
 				ul.className = "pions";
-				li_pions.appendChild(ul);
+				li_pions.appendChild(ul);*/
+				li_pions.append("<ul class='pions'>");
+				var ul = $("ul", li_pions);
 				for(var j=0; j<nb_cases; j++){//creation des 4 cases pour la tentative en cours
-					var li = document.createElement("li");
-					ul.appendChild(li);
+					/*var li = document.createElement("li");
+					ul.appendChild(li);*/
+					ul.append("<li>");
 				}
 
-				var span1 = document.createElement("span");
+				/*var span1 = document.createElement("span");
 				span1.className = "pion_bon";
-				li_pions.appendChild(span1);
+				li_pions.appendChild(span1);*/
+				li_pions.append("<span class='pion_bon'>");
 
-				var span2 = document.createElement("span");
+				/*var span2 = document.createElement("span");
 				span2.className = "pion_mal";
-				li_pions.appendChild(span2);
+				li_pions.appendChild(span2);*/
+				li_pions.append("<span class='pion_mal'>");
 
-				plateau.appendChild(li_pions);
+				//plateau.appendChild(li_pions);
 			}
 		///////////////////////////////////////////////////////////////////////////////////////////
-
 		//tirage au sort par l'ordi de couleurs
 		choixOrdi();
 		affichagePionsOrdi(); //c'est pas drole sinon :D
@@ -129,27 +144,35 @@ $(function(){
 
 	function affichagePionsOrdi(){
 		//affichage du choix de l'ordi :D
-		var cases_ordi = document.getElementsByClassName("computer_choice")[0].getElementsByTagName("ul")[0].getElementsByTagName("li"),
-			num_couleur;
-		for(var i=0; i<nb_cases; i++){
+		var num_couleur, cases_ordi = $(".solution li").each(function(i) {
+			num_couleur = solution[i];
+			$(this).css('background-color', possibilities[num_couleur]);
+		});
+
+		/*for(var i=0; i<nb_cases; i++){
 			num_couleur = solution[i];
 			cases_ordi[i].style.backgroundColor = possibilities[num_couleur];
-		}
+		}*/
 	}
 
 	/**************
 	*comportement lors du clic pour ajouter couleur sur plateau
 	**************/
-	function clic_ajout_couleur(e){
+	function clic_ajout_couleur(){
 		if(choix_utilisateur.length<nb_cases){
-			num_couleur = possibilities.indexOf(e.target.style.backgroundColor);
+			num_couleur = $(this).data("num_couleur");
+			coul = $(this).data("coul");
 			var num_case = Math.min(nb_cases-1, choix_utilisateur.length); //nb_cases -1 car la couleur n'a pas été encore choisie
-			var case_en_cours = document.getElementsByClassName("attempt"+attempts)[0].getElementsByTagName("ul")[0].getElementsByTagName("li");
-			case_en_cours[num_case].style.backgroundColor = e.target.style.backgroundColor; //on donne la couleur de fond choisie à la case
+			
+			/*var case_en_cours = document.getElementsByClassName("attempt"+attempts)[0].getElementsByTagName("ul")[0].getElementsByTagName("li");
+			case_en_cours[num_case].style.backgroundColor = e.target.style.backgroundColor; //on donne la couleur de fond choisie à la case*/
+			
+			nb = $(".attempt"+attempts+" ul>li:nth-child("+(num_case+1)+")").css("background-color", coul).html();
+			//alert("numCoul:"+num_couleur+", num_case:"+num_case+", cases:"+nb);
 
 			choix_utilisateur.push(num_couleur);
 		} else {
-			txt_notif.textContent = "Veuillez effacer la combinaison du plateau pour pouvoir ajouter une couleur !";
+			txt_notif.text("Veuillez effacer la combinaison du plateau pour pouvoir ajouter une couleur !");
 		}
 	}
 
@@ -158,20 +181,20 @@ $(function(){
 	**************/
 	function validerCombi(){
 		if(choix_utilisateur.length<nb_cases){
-			txt_notif.textContent = "Vous n'avez pas choisi tous les pions, validation impossible !";
+			txt_notif.text("Vous n'avez pas choisi tous les pions, validation impossible !");
 			return;
 		}
 		var tabRes = verification(choix_utilisateur, solution);
 		affichageRes(tabRes);
 		attempts++; //une tentative de + (sachant qu'on part de 0)
 		choix_utilisateur = [];
-		txt_notif.textContent = "bien_place="+tabRes["bien_place"]+"/"+nb_cases;
+		txt_notif.text("bien_place="+tabRes["bien_place"]+"/"+nb_cases);
 		if(tabRes["bien_place"] == nb_cases){
 			alert("Bien joué, vous êtes un vrai dieu (il ne vous a fallu que " + attempts +" tentative" + (attempts>1 ? "s":"") + " pour trouver la solution, quel talent) !");
-			window.location.reload();
+			location.reload(true);
 		} else if(attempts>=nb_attemps_max) {
 			alert("Comme c'est dommage, vous avez perdu !");
-			window.location.reload();
+			location.reload(true);
 		}
 	}
 
@@ -180,10 +203,11 @@ $(function(){
 	**************/
 	function supprCombi(){
 		choix_utilisateur = [];
-		cases_tentative = document.getElementsByClassName("attempt"+attempts)[0].getElementsByTagName("ul")[0].getElementsByTagName("li"); //on sélectionne la série de cases de la manche en cours
+		/*cases_tentative = document.getElementsByClassName("attempt"+attempts)[0].getElementsByTagName("ul")[0].getElementsByTagName("li"); //on sélectionne la série de cases de la manche en cours
 		for(var i=0; i<nb_cases; i++){
 			cases_tentative[i].style.backgroundColor = "transparent";
-		}
+		}*/
+		$(".attempt"+attempts+" li").css("background-color", "transparent");
 
 	}
 
